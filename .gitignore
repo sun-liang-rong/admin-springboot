@@ -35,3 +35,4 @@ build/
 ### Local AI tool configs ###
 .continue/
 .feisuan/
+.env

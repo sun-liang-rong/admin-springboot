@@ -18,11 +18,13 @@ public class AuthServiceImpl implements AuthService {
     private UserMapper userMapper;
     @Override
     public LoginResult login(LoginRequest loginRequest) {
+        System.out.println(loginRequest);
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>()
                 .select("name", "age", "email", "id")
                 .eq("name", loginRequest.getName())
                 .eq("password", loginRequest.getPassword());
         User user = userMapper.selectOne(queryWrapper);
+        System.out.println(user);
         if (user == null) {
             throw new BusinessException("用户名或密码错误");
         }
