@@ -1,0 +1,31 @@
+package com.sunsun.adminspringboot.controller;
+
+import com.sunsun.adminspringboot.common.ApiResponse;
+import com.sunsun.adminspringboot.dto.request.query.UserPageQuery;
+import com.sunsun.adminspringboot.dto.response.PageResult;
+import com.sunsun.adminspringboot.entity.User;
+import com.sunsun.adminspringboot.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("user")
+@Tag(name = "用户管理模块", description = "用户新增、查询、修改、删除相关接口")
+public class UserController {
+    @Autowired
+    private UserService userService;
+
+    @Operation(summary = "分页查询用户", description = "支持按用户名、年龄、邮箱条件筛选，返回分页用户列表")
+    @GetMapping("list")
+    public ApiResponse<PageResult<User>> list(@ParameterObject @Valid UserPageQuery userPageQuery) {
+        PageResult<User> list = userService.list(userPageQuery);
+        return ApiResponse.success(list);
+    }
+}
