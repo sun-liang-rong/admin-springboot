@@ -23,7 +23,8 @@ public class SaTokenConfigure {
 
                 // 指定 拦截路由 与 放行路由
                 .addInclude("/**").addExclude("/favicon.ico")    /* 排除掉 /favicon.ico */
-
+                // 对文档 Swagger UI 不进行拦截
+                .addExclude("/doc.html").addExclude("/swagger-ui.html").addExclude("/swagger-ui/**").addExclude("/webjars/**").addExclude("/swagger-resources/**").addExclude("/v3/api-docs/**")
                 // 认证函数: 每次请求执行
                 .setAuth(obj -> {
                     System.out.println("---------- 进入Sa-Token全局认证 -----------");

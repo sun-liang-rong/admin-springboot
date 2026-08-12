@@ -25,14 +25,16 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.hasText(userPageQuery.getName())) {
             wrapper.like(User::getName, userPageQuery.getName());
         }
-        // 根据年龄精确查询
-        if (userPageQuery.getAge() != null) {
-            wrapper.eq(User::getAge, userPageQuery.getAge());
-        }
         // 根据邮箱模糊查询
         if (StringUtils.hasText(userPageQuery.getEmail())) {
             wrapper.like(User::getEmail, userPageQuery.getEmail());
         }
+        wrapper.select(
+                User::getId,
+                User::getName,
+                User::getEmail
+                // 把业务需要的字段全部列出来，不要写 User::getPassword
+        );
         // 分页查询并转换为统一分页响应
         Page<User> page = new Page<>(userPageQuery.getPageNum(), userPageQuery.getPageSize());
         IPage<User> result = userMapper.selectPage(page, wrapper);

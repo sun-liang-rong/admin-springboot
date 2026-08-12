@@ -17,12 +17,16 @@ public class SaTokenConfig implements WebMvcConfigurer {
                     StpUtil.checkLogin();
                 }))
                 .addPathPatterns("/**")
-                // 放行接口：登录、注册、swagger、静态资源
+                // 放行接口：登录、注册、接口文档(doc.html / swagger-ui)、静态资源
                 .excludePathPatterns(
                         "/auth/login",
                         "/auth/register",
                         "/doc.html",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
                         "/webjars/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**",
                         "/favicon.ico"
                 );
     }

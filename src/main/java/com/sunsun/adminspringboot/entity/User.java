@@ -19,10 +19,6 @@ public class User {
     @Schema(description = "用户名", example = "张三", requiredMode = Schema.RequiredMode.REQUIRED)
     @TableField("name")
     private String name;
-//    年龄
-    @Schema(description = "年龄", example = "18", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TableField("age")
-    private int age;
 //    邮箱
     @Schema(description = "邮箱", example = "zhangsan@example.com")
     @TableField("email")

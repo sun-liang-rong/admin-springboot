@@ -21,10 +21,6 @@ public class UserPageQuery {
     @Schema(description = "用户名（模糊查询）", example = "张三")
     private String name;
 
-    @Schema(description = "年龄（精确查询）", example = "18")
-    @Min(value = 0, message = "年龄不能为负数")
-    private Integer age;
-
     @Schema(description = "邮箱（模糊查询）", example = "zhangsan@example.com")
     private String email;
 }

@@ -124,7 +124,7 @@ public class GlobalExceptionHandler {
             case NotLoginException.NOT_TOKEN -> "未携带Authorization凭证";
             default -> "登录认证失败";
         };
-        return ApiResponse.error(401, msg, TraceContext.getTraceId());
+        return ApiResponse.error(401, TraceContext.getTraceId(), msg);
     }
 
     // 缺少权限

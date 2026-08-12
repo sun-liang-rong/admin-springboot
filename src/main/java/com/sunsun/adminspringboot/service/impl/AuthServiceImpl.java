@@ -12,6 +12,8 @@ import com.sunsun.adminspringboot.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
@@ -20,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginResult login(LoginRequest loginRequest) {
         System.out.println(loginRequest);
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>()
-                .select("name", "age", "email", "id")
+                .select("name", "email", "id")
                 .eq("name", loginRequest.getName())
                 .eq("password", loginRequest.getPassword());
         User user = userMapper.selectOne(queryWrapper);
@@ -29,12 +31,14 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException("用户名或密码错误");
         }
         StpUtil.login(user.getId());
+        List<String> role = userMapper.selectUserRoleKeys(user.getId().longValue());
         // 第2步，获取 Token  相关参数
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         LoginResult loginResult = new LoginResult();
-        loginResult.setAge(user.getAge());
         loginResult.setEmail(user.getEmail());
         loginResult.setUserId(user.getId());
+        loginResult.setName(user.getName());
+        loginResult.setRole(role);
         loginResult.setToken(tokenInfo.tokenValue);
         return loginResult;
     }

@@ -50,11 +50,11 @@
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>4.1.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-devtools</artifactId>-->
+<!--            <version>4.1.0</version>-->
+<!--        </dependency>-->
 <!--        my-batis-plus依赖-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -72,11 +72,11 @@
             <artifactId>druid-spring-boot-4-starter</artifactId>
             <version>1.2.28</version>
         </dependency>
-<!--        接口文档-->
+<!--        接口文档：Spring Boot 4 需使用 springdoc-openapi v3（knife4j 4.5.0 及其内置 springdoc 2.x 与 Spring Boot 4 不兼容，已移除）-->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.5.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>3.1.0</version>
         </dependency>
         <!-- 参数校验启动器 -->
         <dependency>

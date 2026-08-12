@@ -12,7 +12,7 @@ import java.util.List;
 public class PageResult<T> implements Serializable {
 
     @Schema(description = "当前页数据")
-    private List<T> records;
+    private List<T> data;
 
     @Schema(description = "总记录数")
     private long total;
@@ -31,7 +31,7 @@ public class PageResult<T> implements Serializable {
      */
     public static <T> PageResult<T> of(IPage<T> page) {
         PageResult<T> result = new PageResult<>();
-        result.setRecords(page.getRecords());
+        result.setData(page.getRecords());
         result.setTotal(page.getTotal());
         result.setPageNum(page.getCurrent());
         result.setPageSize(page.getSize());
