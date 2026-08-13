@@ -6,8 +6,10 @@ import com.sunsun.adminspringboot.common.exception.BusinessException;
 import com.sunsun.adminspringboot.dto.request.req.RolePermissionRequest;
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 import com.sunsun.adminspringboot.entity.Permission;
+import com.sunsun.adminspringboot.entity.Role;
 import com.sunsun.adminspringboot.entity.RolePermission;
 import com.sunsun.adminspringboot.mapper.PermissionMapper;
+import com.sunsun.adminspringboot.mapper.RoleMapper;
 import com.sunsun.adminspringboot.mapper.RolePermissionMapper;
 import com.sunsun.adminspringboot.service.RolePermissionService;
 import jakarta.annotation.Resource;
@@ -22,19 +24,22 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     private RolePermissionMapper rolePermissionMapper;
     @Resource
     private PermissionMapper permissionMapper;
+    @Resource
+    private RoleMapper roleMapper;
     @Override
-    public List<PermissionListResult> getRolePermission(Integer roleId) {
+    public List<Integer> getRolePermission(Integer roleId) {
         // 判断是不是超级管理员
-        if (StpUtil.hasRole("super-admin")) {
+        Role role = roleMapper.selectById(roleId);
+        if (role.getName().equals("super-admin")) {
             // 超级管理员有所有权限
             LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<Permission>();
             wrapper.eq(Permission::getStatus, 1);
-            return permissionMapper.selectList(wrapper).stream().map(PermissionListResult::of).toList();
+            return permissionMapper.selectList(wrapper).stream().map(Permission::getId).toList();
         }
         List<Permission> list = rolePermissionMapper.getRolePermission(roleId);
 
         // 转换 Permission 实体为响应 DTO
-        return list.stream().map(PermissionListResult::of).collect(Collectors.toList());
+        return list.stream().map(Permission::getId).collect(Collectors.toList());
     }
 
     @Override

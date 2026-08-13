@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS role
 # 有 如下字段 user_id(用户id) role_id(角色id)
 CREATE TABLE IF NOT EXISTS user_role
 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     role_id INT NOT NULL,
     create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

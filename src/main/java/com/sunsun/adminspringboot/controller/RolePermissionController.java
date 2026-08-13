@@ -23,7 +23,7 @@ public class RolePermissionController {
     // 获取角色的权限
     @Operation(summary = "查询角色权限", description = "根据角色ID查询该角色拥有的权限列表（返回权限ID、名称、权限字符、路由等完整信息）")
     @GetMapping("/getRolePermission/{roleId}")
-    public ApiResponse<List<PermissionListResult>> getRolePermission(
+    public ApiResponse<List<Integer>> getRolePermission(
             @Parameter(description = "角色ID", required = true, example = "1") @PathVariable Integer roleId) {
         return ApiResponse.success(rolePermissionService.getRolePermission(roleId));
     }
