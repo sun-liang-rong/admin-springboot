@@ -1,22 +1,34 @@
 package com.sunsun.adminspringboot.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
+import com.sunsun.adminspringboot.common.PermissionTreeBuilder;
 import com.sunsun.adminspringboot.dto.request.query.UserPageQuery;
 import com.sunsun.adminspringboot.dto.response.PageResult;
+import com.sunsun.adminspringboot.dto.response.PermissionListResult;
+import com.sunsun.adminspringboot.entity.Permission;
 import com.sunsun.adminspringboot.entity.User;
+import com.sunsun.adminspringboot.mapper.PermissionMapper;
 import com.sunsun.adminspringboot.mapper.UserMapper;
 import com.sunsun.adminspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private PermissionMapper permissionMapper;
 
     @Override
     public PageResult<User> list(UserPageQuery userPageQuery) {
@@ -39,5 +51,38 @@ public class UserServiceImpl implements UserService {
         Page<User> page = new Page<>(userPageQuery.getPageNum(), userPageQuery.getPageSize());
         IPage<User> result = userMapper.selectPage(page, wrapper);
         return PageResult.of(result);
+    }
+
+    @Override
+    public List<PermissionListResult> getMenu(Integer userId) {
+        List<Permission> menu;
+        if (StpUtil.hasRole("super-admin")) {
+            // 超级管理员：查询出所有启用状态的目录+菜单
+            LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<Permission>();
+            wrapper.eq(Permission::getStatus, 1)
+                    .in(Permission::getPerType, 1, 2)
+                    .orderByAsc(Permission::getSortNum);
+            menu = permissionMapper.selectList(wrapper);
+        } else {
+            // 普通用户：按用户-角色-权限关联查询
+            menu = userMapper.selectUserMenuKeys(userId.longValue());
+        }
+        // 转 DTO 并组装成树形结构返回
+        List<PermissionListResult> menuDto = menu.stream().map(PermissionListResult::of).collect(Collectors.toList());
+        return PermissionTreeBuilder.buildTree(menuDto);
+    }
+
+    @Override
+    public List<String> getPermission(Integer userId) {
+        // 判断当前账号是不是超级管理员
+        if (StpUtil.hasRole("super-admin")) {
+           // 查询出所有权限
+            LambdaQueryWrapper<Permission> lambdaQueryWrapper = new LambdaQueryWrapper<Permission>();
+            lambdaQueryWrapper.eq(Permission::getStatus, 1).eq(Permission::getPerType, 3);
+            return permissionMapper.selectList(lambdaQueryWrapper).stream()
+                    .map(Permission::getPerKey)
+                    .collect(Collectors.toList());
+        }
+        return userMapper.selectUserPermissionKeys(Long.parseLong(String.valueOf(userId)));
     }
 }

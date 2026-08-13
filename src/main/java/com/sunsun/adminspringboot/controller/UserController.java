@@ -1,8 +1,10 @@
 package com.sunsun.adminspringboot.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.sunsun.adminspringboot.common.ApiResponse;
 import com.sunsun.adminspringboot.dto.request.query.UserPageQuery;
 import com.sunsun.adminspringboot.dto.response.PageResult;
+import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 import com.sunsun.adminspringboot.entity.User;
 import com.sunsun.adminspringboot.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,9 +13,10 @@ import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -27,5 +30,15 @@ public class UserController {
     public ApiResponse<PageResult<User>> list(@ParameterObject @Valid UserPageQuery userPageQuery) {
         PageResult<User> list = userService.list(userPageQuery);
         return ApiResponse.success(list);
+    }
+    @Operation(summary = "获取当前用户菜单", description = "根据当前登录用户返回其可见的菜单列表（目录+菜单），已组装为树形结构返回；超级管理员返回全部启用状态的菜单")
+    @GetMapping("menu")
+    public ApiResponse<List<PermissionListResult>> getMenu() {
+        return ApiResponse.success(userService.getMenu(Integer.valueOf(StpUtil.getLoginId().toString())));
+    }
+    @Operation(summary = "获取当前用户权限", description = "根据当前登录用户返回其拥有的权限字符列表（如 system:user:add）；超级管理员返回全部权限字符")
+    @GetMapping("permission")
+    public ApiResponse<?> getPermission() {
+        return ApiResponse.success(userService.getPermission(Integer.valueOf(StpUtil.getLoginId().toString())));
     }
 }
