@@ -36,3 +36,6 @@ build/
 .continue/
 .feisuan/
 .env
+
+### 本地敏感配置 ###
+application-local.yaml

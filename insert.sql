@@ -32,4 +32,4 @@ WHERE NOT EXISTS (SELECT 1 FROM user_role ur WHERE ur.user_id = u.id AND ur.role
 
 -- 执行后可登录账号：
 --   admin  / admin123（超级管理员）
---   slr    / ***REDACTED***（超级管理员，如已存在则自动绑定角色）
+--   slr    / <password-redacted>（超级管理员，如已存在则自动绑定角色）

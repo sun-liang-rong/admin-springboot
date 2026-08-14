@@ -3,9 +3,10 @@ spring:
     name: admin-springboot
   datasource:
     # jdbc:mysql://地址:端口/数据库名
-    url: jdbc:mysql://***REDACTED***:3306/admin_spring_boot?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: root
-    password: ***REDACTED***
+    # 敏感信息不写死在仓库中，通过环境变量注入；本地开发可用 application-local.yaml 覆盖（已被 .gitignore 忽略）
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:admin_spring_boot}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 server:
   servlet:
