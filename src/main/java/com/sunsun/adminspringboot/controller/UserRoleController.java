@@ -1,8 +1,9 @@
 package com.sunsun.adminspringboot.controller;
 
 import com.sunsun.adminspringboot.common.ApiResponse;
-import com.sunsun.adminspringboot.dto.request.req.UserRoleRequest;
+import com.sunsun.adminspringboot.dto.request.UserRoleRequest;
 import com.sunsun.adminspringboot.service.UserRoleService;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +27,7 @@ public class UserRoleController {
     private UserRoleService userRoleService;
 
     @Operation(summary = "查询指定用户角色ID", description = "根据用户ID查询其拥有的角色ID列表（来源于 用户-角色 关联表），用于分配角色时回显")
+    @SaCheckPermission("system:user:role")
     @GetMapping("getRoleIds/{userId}")
     public ApiResponse<List<Integer>> getRoleIds(
             @Parameter(description = "用户ID", required = true, example = "1") @PathVariable Integer userId) {
@@ -33,6 +35,7 @@ public class UserRoleController {
     }
 
     @Operation(summary = "修改用户角色", description = "根据用户ID先删除原有角色关联，再批量设置新的角色列表；roleList 传角色ID列表，传空数组表示清空该用户所有角色")
+    @SaCheckPermission("system:user:role")
     @PostMapping("updateRole")
     public ApiResponse<?> updateRole(@RequestBody @Valid UserRoleRequest userRoleRequest) {
         userRoleService.updateRole(userRoleRequest.getUserId(), userRoleRequest.getRoleList());

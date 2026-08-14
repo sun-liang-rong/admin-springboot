@@ -1,4 +1,4 @@
-package com.sunsun.adminspringboot.common;
+package com.sunsun.adminspringboot.util;
 
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 

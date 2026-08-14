@@ -3,7 +3,7 @@ package com.sunsun.adminspringboot.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.sunsun.adminspringboot.common.exception.BusinessException;
-import com.sunsun.adminspringboot.dto.request.req.RolePermissionRequest;
+import com.sunsun.adminspringboot.dto.request.RolePermissionRequest;
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 import com.sunsun.adminspringboot.entity.Permission;
 import com.sunsun.adminspringboot.entity.Role;

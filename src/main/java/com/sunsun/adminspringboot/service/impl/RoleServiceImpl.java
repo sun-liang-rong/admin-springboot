@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sunsun.adminspringboot.dto.request.query.RolePageQuery;
-import com.sunsun.adminspringboot.dto.request.req.RoleRequest;
+import com.sunsun.adminspringboot.dto.request.RolePageQuery;
+import com.sunsun.adminspringboot.dto.request.RoleRequest;
 import com.sunsun.adminspringboot.dto.response.PageResult;
 import com.sunsun.adminspringboot.entity.Role;
 import com.sunsun.adminspringboot.entity.User;
@@ -15,6 +15,7 @@ import com.sunsun.adminspringboot.mapper.RoleMapper;
 import com.sunsun.adminspringboot.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 
 @Service
@@ -24,7 +25,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public PageResult<Role> getRoleList(RolePageQuery rolePageQuery) {
         LambdaQueryWrapper<Role> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        if (rolePageQuery.getRoleName() != null) {
+        if (StringUtils.hasText(rolePageQuery.getRoleName())) {
             lambdaQueryWrapper.like(Role::getName, rolePageQuery.getRoleName());
         }
         Page<Role> page = new Page<>(rolePageQuery.getPageNum(), rolePageQuery.getPageSize());

@@ -1,8 +1,9 @@
 package com.sunsun.adminspringboot.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.sunsun.adminspringboot.common.ApiResponse;
-import com.sunsun.adminspringboot.dto.request.query.UserPageQuery;
+import com.sunsun.adminspringboot.dto.request.UserPageQuery;
 import com.sunsun.adminspringboot.dto.response.PageResult;
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 import com.sunsun.adminspringboot.entity.User;
@@ -26,6 +27,7 @@ public class UserController {
     private UserService userService;
 
     @Operation(summary = "分页查询用户", description = "支持按用户名、年龄、邮箱条件筛选，返回分页用户列表")
+    @SaCheckPermission("system:user:list")
     @GetMapping("list")
     public ApiResponse<PageResult<User>> list(@ParameterObject @Valid UserPageQuery userPageQuery) {
         PageResult<User> list = userService.list(userPageQuery);

@@ -1,7 +1,7 @@
 package com.sunsun.adminspringboot.service;
 
-import com.sunsun.adminspringboot.dto.request.query.RolePageQuery;
-import com.sunsun.adminspringboot.dto.request.req.RoleRequest;
+import com.sunsun.adminspringboot.dto.request.RolePageQuery;
+import com.sunsun.adminspringboot.dto.request.RoleRequest;
 import com.sunsun.adminspringboot.dto.response.PageResult;
 import com.sunsun.adminspringboot.entity.Role;
 

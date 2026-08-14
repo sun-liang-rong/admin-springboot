@@ -1,4 +1,4 @@
-package com.sunsun.adminspringboot.dto.request.query;
+package com.sunsun.adminspringboot.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;

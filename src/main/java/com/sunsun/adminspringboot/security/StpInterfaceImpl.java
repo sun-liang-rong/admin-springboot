@@ -22,7 +22,13 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        List<String> permissionList = userMapper.selectUserPermissionKeys(loginIdToLong(loginId));
+        Long userId = loginIdToLong(loginId);
+        // 超级管理员拥有全部权限（返回 * 通配符，@SaCheckPermission 直接通过）
+        List<String> roleList = userRoleMapper.selectUserRoleKeys(userId);
+        if (roleList.contains("super-admin")) {
+            return List.of("*");
+        }
+        List<String> permissionList = userMapper.selectUserPermissionKeys(userId);
         System.out.println("permissionList: " + permissionList);
         return permissionList;
     }

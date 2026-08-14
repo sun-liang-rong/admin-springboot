@@ -5,11 +5,14 @@ import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import cn.dev33.satoken.filter.SaServletFilter;
+import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * [Sa-Token 权限认证] 配置类
@@ -17,7 +20,24 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-public class SaTokenConfigure {
+public class SaTokenConfigure implements WebMvcConfigurer {
+
+    /**
+     * 注册 [Sa-Token 注解拦截器]
+     * <p>处理 @SaCheckLogin / @SaCheckRole / @SaCheckPermission 等注解鉴权
+     * （登录态已由 SaServletFilter 全局过滤器保证，此处仅开启注解校验）</p>
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SaInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/auth/login", "/auth/register",
+                        "/doc.html", "/swagger-ui.html", "/swagger-ui/**",
+                        "/webjars/**", "/swagger-resources/**", "/v3/api-docs/**",
+                        "/favicon.ico"
+                );
+    }
 
     /**
      * 注册 [Sa-Token全局过滤器]

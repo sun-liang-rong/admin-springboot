@@ -130,13 +130,13 @@ public class GlobalExceptionHandler {
     // 缺少权限
     @ExceptionHandler(NotPermissionException.class)
     public ApiResponse<?> handleNotPermissionException(NotPermissionException e) {
-        return ApiResponse.error(403, "没有操作权限：" + e.getPermission(), TraceContext.getTraceId());
+        return ApiResponse.error(403, TraceContext.getTraceId(), "没有操作权限：" + e.getPermission());
     }
 
     // 缺少角色
     @ExceptionHandler(NotRoleException.class)
     public ApiResponse<?> handleNotRoleException(NotRoleException e) {
-        return ApiResponse.error(403, "用户角色不足：" + e.getRole(), TraceContext.getTraceId());
+        return ApiResponse.error(403, TraceContext.getTraceId(), "用户角色不足：" + e.getRole());
     }
 
     /**

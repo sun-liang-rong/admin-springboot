@@ -1,4 +1,4 @@
-package com.sunsun.adminspringboot.dto.request.req;
+package com.sunsun.adminspringboot.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

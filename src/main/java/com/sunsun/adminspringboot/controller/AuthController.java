@@ -2,8 +2,8 @@ package com.sunsun.adminspringboot.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.sunsun.adminspringboot.common.ApiResponse;
-import com.sunsun.adminspringboot.dto.request.req.LoginRequest;
-import com.sunsun.adminspringboot.dto.request.req.RegisterRequest;
+import com.sunsun.adminspringboot.dto.request.LoginRequest;
+import com.sunsun.adminspringboot.dto.request.RegisterRequest;
 import com.sunsun.adminspringboot.dto.response.LoginResult;
 import com.sunsun.adminspringboot.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;

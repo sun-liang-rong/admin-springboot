@@ -2,10 +2,10 @@ package com.sunsun.adminspringboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
-import com.sunsun.adminspringboot.common.PermissionTreeBuilder;
+import com.sunsun.adminspringboot.util.PermissionTreeBuilder;
 import com.sunsun.adminspringboot.common.enums.PermissionTypeEnum;
 import com.sunsun.adminspringboot.common.exception.BusinessException;
-import com.sunsun.adminspringboot.dto.request.req.PermissionRequest;
+import com.sunsun.adminspringboot.dto.request.PermissionRequest;
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 import com.sunsun.adminspringboot.entity.Permission;
 import com.sunsun.adminspringboot.mapper.PermissionMapper;

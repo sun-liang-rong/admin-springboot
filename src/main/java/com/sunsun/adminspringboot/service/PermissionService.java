@@ -1,6 +1,6 @@
 package com.sunsun.adminspringboot.service;
 
-import com.sunsun.adminspringboot.dto.request.req.PermissionRequest;
+import com.sunsun.adminspringboot.dto.request.PermissionRequest;
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
 import com.sunsun.adminspringboot.entity.Permission;
 
