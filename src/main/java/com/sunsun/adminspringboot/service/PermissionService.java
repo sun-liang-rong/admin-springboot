@@ -13,4 +13,7 @@ public interface PermissionService {
     Long updatePermission(PermissionRequest permission);
 
     Long deletePermission(Long id);
+
+    /** 全部启用状态的目录/菜单路由地址（登录即可调用，供前端 403 判断） */
+    List<String> getAllMenuPaths();
 }

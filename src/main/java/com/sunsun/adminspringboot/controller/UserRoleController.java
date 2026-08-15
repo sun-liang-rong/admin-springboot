@@ -1,5 +1,7 @@
 package com.sunsun.adminspringboot.controller;
 
+import com.sunsun.adminspringboot.annotation.OperationLog;
+import com.sunsun.adminspringboot.common.enums.OperationType;
 import com.sunsun.adminspringboot.common.ApiResponse;
 import com.sunsun.adminspringboot.dto.request.UserRoleRequest;
 import com.sunsun.adminspringboot.service.UserRoleService;
@@ -37,6 +39,7 @@ public class UserRoleController {
     @Operation(summary = "修改用户角色", description = "根据用户ID先删除原有角色关联，再批量设置新的角色列表；roleList 传角色ID列表，传空数组表示清空该用户所有角色")
     @SaCheckPermission("system:user:role")
     @PostMapping("updateRole")
+    @OperationLog(module = "用户管理", operation = "分配角色", type = OperationType.UPDATE)
     public ApiResponse<?> updateRole(@RequestBody @Valid UserRoleRequest userRoleRequest) {
         userRoleService.updateRole(userRoleRequest.getUserId(), userRoleRequest.getRoleList());
         return ApiResponse.success("修改成功");

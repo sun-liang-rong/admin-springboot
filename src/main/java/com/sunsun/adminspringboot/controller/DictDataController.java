@@ -1,5 +1,7 @@
 package com.sunsun.adminspringboot.controller;
 
+import com.sunsun.adminspringboot.annotation.OperationLog;
+import com.sunsun.adminspringboot.common.enums.OperationType;
 import com.sunsun.adminspringboot.common.ApiResponse;
 import com.sunsun.adminspringboot.dto.request.DictDataPageQuery;
 import com.sunsun.adminspringboot.dto.request.DictDataRequest;
@@ -34,6 +36,7 @@ public class DictDataController {
     @Operation(summary = "新增字典数据", description = "创建一个新的字典数据（新增时无需传递 id）")
     @SaCheckPermission("system:dictData:add")
     @PostMapping("/addDictData")
+    @OperationLog(module = "字典管理", operation = "新增字典数据", type = OperationType.INSERT)
     public ApiResponse<Integer> addDictData(@RequestBody @Valid DictDataRequest dictDataRequest) {
         return ApiResponse.success(dictDataService.addDictData(dictDataRequest));
     }
@@ -41,6 +44,7 @@ public class DictDataController {
     @Operation(summary = "修改字典数据", description = "修改字典数据信息（修改时必须传递 id）")
     @SaCheckPermission("system:dictData:edit")
     @PostMapping("/updateDictData")
+    @OperationLog(module = "字典管理", operation = "修改字典数据", type = OperationType.UPDATE)
     public ApiResponse<Integer> updateDictData(@RequestBody @Valid DictDataRequest dictDataRequest) {
         return ApiResponse.success(dictDataService.updateDictData(dictDataRequest));
     }
@@ -48,6 +52,7 @@ public class DictDataController {
     @Operation(summary = "删除字典数据", description = "根据字典数据 id 删除指定字典数据")
     @SaCheckPermission("system:dictData:delete")
     @PostMapping("/deleteDictData/{id}")
+    @OperationLog(module = "字典管理", operation = "删除字典数据", type = OperationType.DELETE)
     public ApiResponse<Integer> deleteDictData(@Parameter(description = "字典数据ID", required = true, example = "1") @PathVariable Integer id) {
         return ApiResponse.success(dictDataService.deleteDictData(id));
     }

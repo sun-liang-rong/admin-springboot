@@ -1,5 +1,7 @@
 package com.sunsun.adminspringboot.controller;
 
+import com.sunsun.adminspringboot.annotation.OperationLog;
+import com.sunsun.adminspringboot.common.enums.OperationType;
 import com.sunsun.adminspringboot.common.ApiResponse;
 import com.sunsun.adminspringboot.dto.request.RolePageQuery;
 import com.sunsun.adminspringboot.dto.request.RoleRequest;
@@ -25,6 +27,7 @@ public class RoleController {
     @Operation(summary = "分页查询角色列表", description = "支持按角色名条件筛选，返回分页角色列表")
     @SaCheckPermission("system:role:list")
     @GetMapping("/getRoleList")
+    @OperationLog(module = "角色管理", operation = "查询角色列表", type = OperationType.QUERY)
     public ApiResponse<PageResult<Role>> getRoleList(@ParameterObject @Valid RolePageQuery rolePageQuery) {
         return ApiResponse.success(roleService.getRoleList(rolePageQuery));
     }
@@ -32,6 +35,7 @@ public class RoleController {
     @Operation(summary = "新建角色", description = "创建一个新角色（新增时无需传递 id）")
     @SaCheckPermission("system:role:add")
     @PostMapping("/newRole")
+    @OperationLog(module = "角色管理", operation = "新建角色", type = OperationType.INSERT)
     public ApiResponse<Role> newRole(@RequestBody @Valid RoleRequest roleRequest) {
         Role role = roleService.newRole(roleRequest);
         return ApiResponse.success(role);
@@ -40,6 +44,7 @@ public class RoleController {
     @Operation(summary = "修改角色", description = "修改角色信息（修改时必须传递 id）")
     @SaCheckPermission("system:role:edit")
     @PostMapping("/updateRole")
+    @OperationLog(module = "角色管理", operation = "修改角色", type = OperationType.UPDATE)
     public ApiResponse<Role> updateRole(@RequestBody @Valid RoleRequest roleRequest) {
         Role role = roleService.updateRole(roleRequest);
         return ApiResponse.success(role);
@@ -48,6 +53,7 @@ public class RoleController {
     @Operation(summary = "删除角色", description = "根据角色 id 删除指定角色")
     @SaCheckPermission("system:role:delete")
     @DeleteMapping("/deleteRole/{id}")
+    @OperationLog(module = "角色管理", operation = "删除角色", type = OperationType.DELETE)
     public ApiResponse<Void> deleteRole(@Parameter(description = "角色ID", required = true, example = "1") @PathVariable Long id) {
         roleService.deleteRole(id);
         return ApiResponse.success(null);

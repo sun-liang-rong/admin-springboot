@@ -1,5 +1,7 @@
 package com.sunsun.adminspringboot.controller;
 
+import com.sunsun.adminspringboot.annotation.OperationLog;
+import com.sunsun.adminspringboot.common.enums.OperationType;
 import com.sunsun.adminspringboot.common.ApiResponse;
 import com.sunsun.adminspringboot.dto.request.RolePermissionRequest;
 import com.sunsun.adminspringboot.dto.response.PermissionListResult;
@@ -34,6 +36,7 @@ public class RolePermissionController {
     @Operation(summary = "修改角色权限", description = "根据角色ID先删除原有权限关联，再批量设置新的权限列表；permissionList 传权限ID列表，传空数组表示清空该角色所有权限")
     @SaCheckPermission("system:role:assign")
     @PostMapping("/updateRolePermission")
+    @OperationLog(module = "角色管理", operation = "分配权限", type = OperationType.UPDATE)
     public ApiResponse<?> updateRolePermission(@RequestBody @Valid RolePermissionRequest rolePermissionRequest) {
         rolePermissionService.updateRolePermission(rolePermissionRequest);
         return ApiResponse.success("修改成功");

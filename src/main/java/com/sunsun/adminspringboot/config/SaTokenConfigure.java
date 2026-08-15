@@ -32,7 +32,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/auth/login", "/auth/register",
+                        "/auth/login", "/auth/register", "/auth/captcha",
                         "/doc.html", "/swagger-ui.html", "/swagger-ui/**",
                         "/webjars/**", "/swagger-resources/**", "/v3/api-docs/**",
                         "/favicon.ico"
@@ -46,10 +46,10 @@ public class SaTokenConfigure implements WebMvcConfigurer {
     public SaServletFilter getSaServletFilter() {
         return new SaServletFilter()
 
-                // 拦截所有路由，仅放行公开路由（登录、注册、接口文档、静态资源）
+                // 拦截所有路由，仅放行公开路由（登录、注册、验证码、接口文档、静态资源）
                 .addInclude("/**")
                 .addExclude(
-                        "/auth/login", "/auth/register",
+                        "/auth/login", "/auth/register", "/auth/captcha",
                         "/doc.html", "/swagger-ui.html", "/swagger-ui/**",
                         "/webjars/**", "/swagger-resources/**", "/v3/api-docs/**",
                         "/favicon.ico"

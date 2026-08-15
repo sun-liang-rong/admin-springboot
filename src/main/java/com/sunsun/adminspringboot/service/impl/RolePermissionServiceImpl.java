@@ -14,6 +14,7 @@ import com.sunsun.adminspringboot.mapper.RolePermissionMapper;
 import com.sunsun.adminspringboot.service.RolePermissionService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +44,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateRolePermission(RolePermissionRequest rolePermissionRequest) {
         try {
             // 先删除当前角色关联的权限

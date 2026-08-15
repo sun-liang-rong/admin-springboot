@@ -7,17 +7,27 @@ import com.sunsun.adminspringboot.common.exception.BusinessException;
 import com.sunsun.adminspringboot.dto.request.DictTypePageQuery;
 import com.sunsun.adminspringboot.dto.request.DictTypeRequest;
 import com.sunsun.adminspringboot.dto.response.PageResult;
+import com.sunsun.adminspringboot.entity.DictData;
 import com.sunsun.adminspringboot.entity.DictType;
+import com.sunsun.adminspringboot.mapper.DictDataMapper;
 import com.sunsun.adminspringboot.mapper.DictTypeMapper;
 import com.sunsun.adminspringboot.service.DictTypeService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class DictTypeServiceImpl implements DictTypeService {
     @Resource
     private DictTypeMapper dictTypeMapper;
+    @Resource
+    private DictDataMapper dictDataMapper;
     @Override
     public PageResult<DictType> getDictTypeList(DictTypePageQuery dictTypePageQuery) {
         LambdaQueryWrapper<DictType> wrapper = new LambdaQueryWrapper<DictType>();
@@ -74,5 +84,49 @@ public class DictTypeServiceImpl implements DictTypeService {
         } catch (Exception e) {
             throw new BusinessException("删除字典类型失败");
         }
+    }
+
+    @Override
+    public Map<String, List<DictData>> getAllDict() {
+        // 1. 查询所有启用的字典类型（保持创建顺序）
+        List<DictType> types = dictTypeMapper.selectList(
+                new LambdaQueryWrapper<DictType>()
+                        .eq(DictType::getStatus, 1)
+                        .orderByAsc(DictType::getId));
+        if (types.isEmpty()) {
+            // 没有启用的字典类型，返回空 Map
+            return Collections.emptyMap();
+        }
+        List<String> typeCodes = types.stream().map(DictType::getDictType).toList();
+
+        // 2. 一次性查出这些类型下所有启用的字典数据（按 sort、id 排序保证下拉顺序稳定）
+        List<DictData> dataList = dictDataMapper.selectList(
+                new LambdaQueryWrapper<DictData>()
+                        .in(DictData::getDictType, typeCodes)
+                        .eq(DictData::getStatus, 1)
+                        .orderByAsc(DictData::getSort)
+                        .orderByAsc(DictData::getId));
+
+        // 3. 按类型编码分组，保留类型定义顺序
+        Map<String, List<DictData>> dictMap = new LinkedHashMap<>();
+        for (DictType type : types) {
+            dictMap.put(type.getDictType(), new ArrayList<>());
+        }
+        //
+        for (DictData data : dataList) {
+            //
+            dictMap.computeIfAbsent(data.getDictType(), k -> new ArrayList<>()).add(data);
+        }
+        return dictMap;
+    }
+
+    @Override
+    public List<DictData> getDictByType(String dictType) {
+        return dictDataMapper.selectList(
+                new LambdaQueryWrapper<DictData>()
+                        .eq(DictData::getDictType, dictType)
+                        .eq(DictData::getStatus, 1)
+                        .orderByAsc(DictData::getSort)
+                        .orderByAsc(DictData::getId));
     }
 }

@@ -2,6 +2,8 @@ package com.sunsun.adminspringboot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
+import com.sunsun.adminspringboot.annotation.OperationLog;
+import com.sunsun.adminspringboot.common.enums.OperationType;
 import com.sunsun.adminspringboot.common.ApiResponse;
 import com.sunsun.adminspringboot.dto.request.UserPageQuery;
 import com.sunsun.adminspringboot.dto.response.PageResult;
@@ -29,6 +31,7 @@ public class UserController {
     @Operation(summary = "分页查询用户", description = "支持按用户名、年龄、邮箱条件筛选，返回分页用户列表")
     @SaCheckPermission("system:user:list")
     @GetMapping("list")
+    @OperationLog(module = "用户管理", operation = "查询用户列表", type = OperationType.QUERY)
     public ApiResponse<PageResult<User>> list(@ParameterObject @Valid UserPageQuery userPageQuery) {
         PageResult<User> list = userService.list(userPageQuery);
         return ApiResponse.success(list);

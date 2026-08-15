@@ -15,4 +15,10 @@ public class LoginRequest {
     @Schema(description = "密码", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "密码不能为空")
     private String password;
+
+    @Schema(description = "验证码ID（GET /auth/captcha 返回）")
+    private String captchaId;
+
+    @Schema(description = "验证码")
+    private String captchaCode;
 }

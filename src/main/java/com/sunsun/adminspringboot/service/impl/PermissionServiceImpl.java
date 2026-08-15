@@ -64,6 +64,20 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         return id;
     }
 
+    @Override
+    public List<String> getAllMenuPaths() {
+        LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<Permission>()
+                .select(Permission::getPath)
+                .eq(Permission::getStatus, 1)
+                .in(Permission::getPerType, 1, 2)
+                .isNotNull(Permission::getPath)
+                .orderByAsc(Permission::getSortNum);
+        return permissionMapper.selectList(wrapper).stream()
+                .map(Permission::getPath)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
     /**
      * 按权限类型校验：类型合法性、类型专属必填字段、父子层级关系
      */
